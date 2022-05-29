@@ -32,6 +32,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        buildConfigField("String", "ALPHA_VANTAGE_ACCESS_KEY", alpha_vantage_api_key)
     }
 
     buildTypes {
