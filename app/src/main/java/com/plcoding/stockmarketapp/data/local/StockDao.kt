@@ -16,7 +16,7 @@ interface StockDao {
         WHERE LOWER(name) LIKE '%' || LOWER (:query) || '%' OR 
         UPPER (:query) == symbol
     """)
-    fun queryCompanyListings(query: String): List<CompanyListingEntity>
+    suspend fun queryCompanyListings(query: String): List<CompanyListingEntity>
 
     @Query("DELETE FROM companylistingentity")
     suspend fun clearCompanyListings()
