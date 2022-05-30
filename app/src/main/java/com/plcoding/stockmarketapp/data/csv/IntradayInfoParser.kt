@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.time.DayOfWeek
 import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,7 +29,11 @@ class IntradayInfoParser @Inject constructor() : CSVParser<IntradayInfo> {
                     val dto = IntradayInfoDto(timestamp, close.toDouble())
                     dto.toIntradayInfo()
                 }.filter {
-                    it.date.dayOfMonth == LocalDateTime.now().minusDays(1).dayOfMonth
+                    val now = LocalDateTime.now()
+                    val weekDay = now.dayOfWeek
+                    val isSunDayOrMonday = weekDay == DayOfWeek.MONDAY || weekDay == DayOfWeek.SUNDAY
+                    val date = if(isSunDayOrMonday) 3 else 1
+                    it.date.dayOfMonth == now.minusDays(date.toLong()).dayOfMonth
                 }.sortedBy {
                     it.date.hour
                 }.also {
